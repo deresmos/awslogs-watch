@@ -2,6 +2,7 @@ awslogs-watch
 ==
 
 [![Build Status](https://travis-ci.org/deresmos/awslogs-watch.svg?branch=master)](https://travis-ci.org/deresmos/awslogs-watch)
+[![PyPI](https://badge.fury.io/py/awslogs-watch.svg)](https://badge.fury.io/py/awslogs-watch)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/deresmos/awslogs-watch/blob/master/LICENSE)
 
 
