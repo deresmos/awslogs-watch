@@ -6,7 +6,7 @@ awslogs-watch
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/deresmos/awslogs-watch/blob/master/LICENSE)
 
 
-Abount
+About
 ===
 awslogs-watch is a CLI tool that makes it easy to use awslogs.
 Default cache directory is `~/.cache/awslogs_watch`
