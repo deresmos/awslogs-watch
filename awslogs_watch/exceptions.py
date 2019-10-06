@@ -1,0 +1,2 @@
+class AWSLogsWatchException(Exception):
+    pass
