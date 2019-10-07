@@ -78,10 +78,7 @@ class AWSLogsWatch:
             if not group:
                 raise AWSLogsWatchException(f"No such group. ({group})")
             cmd = self.awslogs.create_command(f"get {group}")
-            logs = Executer.run(cmd)
-
-            for log in logs:
-                print(log)
+            Executer.run(cmd)
         except KeyboardInterrupt:
             print(f"Stop awslogs: {group}")
 
