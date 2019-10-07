@@ -9,7 +9,7 @@ from awslogs_watch.model import AWSLogsCommand
 class Prompt:
     @staticmethod
     def input_group(groups, history_path) -> str:
-        completer = FuzzyWordCompleter(groups)
+        completer = FuzzyWordCompleter(groups, WORD=True)
         history = FileHistory(history_path)
         session = PromptSession(history=history)
         group_name = session.prompt(
