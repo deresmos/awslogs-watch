@@ -26,7 +26,6 @@ class AWSLogsWatchConsole:
         args = self.parser.parse_args()
 
         profile = args.profile or os.environ.get("AWS_PROFILE", "default")
-        print(profile)
         awslogs_watch = AWSLogsWatch(profile=profile)
         awslogs_watch.awslogs.option = args.option
         command = self.load_command()
