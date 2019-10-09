@@ -70,17 +70,13 @@ class AWSLogsWatch:
         group = self.prompt_group()
         cmd = self.awslogs.create_command(f"get {group} --watch")
         Executer.run(cmd)
-        print(f"Stop {group}")
 
     def get(self):
-        try:
-            group = self.prompt_group()
-            if not group:
-                raise AWSLogsWatchException(f"No such group. ({group})")
-            cmd = self.awslogs.create_command(f"get {group}")
-            Executer.run(cmd)
-        except KeyboardInterrupt:
-            print(f"Stop awslogs: {group}")
+        group = self.prompt_group()
+        if not group:
+            raise AWSLogsWatchException(f"No such group. ({group})")
+        cmd = self.awslogs.create_command(f"get {group}")
+        Executer.run(cmd)
 
     def update_groups(self):
         print("Updating...")

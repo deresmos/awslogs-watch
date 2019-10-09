@@ -63,6 +63,8 @@ class AWSLogsWatchConsole:
 def start_console():
     try:
         AWSLogsWatchConsole().run()
+    except KeyboardInterrupt:
+        print("Quit awslogs-watch")
     except AWSLogsWatchException as e:
         print(e)
         Executer.exit_error()
