@@ -9,6 +9,8 @@ from awslogs_watch.model import AWSLogsCommand
 
 
 class AWSLogsWatchConsole:
+    OPTION_CACHE_NAME = "options"
+
     def __init__(self):
         parser = ArgumentParser(
             description="awslogs wrapper command.", usage="%(prog)s [options]"
@@ -27,8 +29,8 @@ class AWSLogsWatchConsole:
 
         profile = args.profile or os.environ.get("AWS_PROFILE", "default")
         awslogs_watch = AWSLogsWatch(profile=profile)
-        awslogs_watch.awslogs.option = args.option
         command = self.load_command()
+        awslogs_watch.awslogs.option = self.load_option(args.option)
 
         if command.is_update():
             awslogs_watch.update_groups()
@@ -58,6 +60,13 @@ class AWSLogsWatchConsole:
             command = AWSLogsCommand[command_str]
 
         return command
+
+    def load_option(self, option):
+        if option:
+            return option
+
+        option = Prompt.input_option(self.OPTION_CACHE_NAME)
+        return option
 
 
 def start_console():
