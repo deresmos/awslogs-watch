@@ -47,3 +47,10 @@ class Prompt:
         )
 
         return option_str
+
+    @staticmethod
+    def input_profile() -> str:
+        # TODO: profile completer
+        profile = prompt("Input Profile: ", complete_while_typing=True)
+
+        return profile
