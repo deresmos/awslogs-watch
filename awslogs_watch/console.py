@@ -4,6 +4,7 @@ from argparse import ArgumentParser
 from awslogs_watch.base import AWSLogsWatch
 from awslogs_watch.exceptions import AWSLogsWatchException
 from awslogs_watch.lib.execute import Executer
+from awslogs_watch.lib.path import AWSLogsWatchPath
 from awslogs_watch.lib.prompt import Prompt
 from awslogs_watch.model import AWSLogsCommand
 
@@ -69,7 +70,8 @@ class AWSLogsWatchConsole:
             return option
 
         if is_interactive:
-            _option = Prompt.input_option(self.OPTION_CACHE_NAME)
+            cache_path = AWSLogsWatchPath().create_filepath(self.OPTION_CACHE_NAME)
+            _option = Prompt.input_option(cache_path)
             option += f" {_option}"
 
         return option
