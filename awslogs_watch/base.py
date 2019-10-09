@@ -70,7 +70,6 @@ class AWSLogsWatch:
         group = self.prompt_group()
         cmd = self.awslogs.create_command(f"get {group} --watch")
         Executer.run(cmd)
-        print(f"Stop {group}")
 
     def get(self):
         group = self.prompt_group()
