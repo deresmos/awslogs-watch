@@ -33,7 +33,7 @@ class AWSLogsWatchConsole:
         profile = args.profile or os.environ.get("AWS_PROFILE", "default")
         awslogs_watch = AWSLogsWatch(profile=profile)
         command = self.load_command()
-        awslogs_watch.awslogs.option = self.load_option(args.option)
+        awslogs_watch.awslogs.option = self.load_option(args.option, args.interactive)
 
         if command.is_update():
             awslogs_watch.update_groups()
@@ -64,11 +64,14 @@ class AWSLogsWatchConsole:
 
         return command
 
-    def load_option(self, option):
-        if option:
+    def load_option(self, option, is_interactive=False):
+        if option and not is_interactive:
             return option
 
-        option = Prompt.input_option(self.OPTION_CACHE_NAME)
+        if is_interactive:
+            _option = Prompt.input_option(self.OPTION_CACHE_NAME)
+            option += f" {_option}"
+
         return option
 
 
