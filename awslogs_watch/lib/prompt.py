@@ -3,7 +3,7 @@ from prompt_toolkit.completion import FuzzyWordCompleter
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.shortcuts import prompt
 
-from awslogs_watch.model import AWSLogsCommand
+from awslogs_watch.model import AWSLogsCommand, AWSLogsOption
 
 
 class Prompt:
@@ -33,3 +33,17 @@ class Prompt:
             return ""
 
         return command_str
+
+    @staticmethod
+    def input_option(history_path) -> str:
+        options = [option.value for option in list(AWSLogsOption)]
+        completer = FuzzyWordCompleter(options, WORD=True)
+
+        history = FileHistory(history_path)
+        session = PromptSession(history=history)
+
+        option_str = session.prompt(
+            "Input Option: ", completer=completer, complete_while_typing=True
+        )
+
+        return option_str
