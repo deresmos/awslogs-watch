@@ -79,7 +79,7 @@ class AWSLogsWatchConsole:
         if not is_interactive:
             return profile
 
-        _profile = Prompt.input_profile()
+        _profile = Prompt.input_profile(default=profile)
         if not _profile:
             return profile
 
