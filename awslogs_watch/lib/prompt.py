@@ -37,7 +37,7 @@ class Prompt:
     @staticmethod
     def input_option(history_path) -> str:
         options = [option.value for option in list(AWSLogsOption)]
-        completer = FuzzyWordCompleter(options)
+        completer = FuzzyWordCompleter(options, WORD=True)
 
         history = FileHistory(history_path)
         session = PromptSession(history=history)
