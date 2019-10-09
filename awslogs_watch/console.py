@@ -66,12 +66,10 @@ class AWSLogsWatchConsole:
         return command
 
     def load_option(self, option, is_interactive=False):
-        if option and not is_interactive:
+        if not is_interactive:
             return option
 
-        if is_interactive:
-            _option = Prompt.input_option(self.OPTION_CACHE_NAME)
-            option += f" {_option}"
+        option = Prompt.input_option(self.OPTION_CACHE_NAME, default=option)
 
         return option
 
