@@ -31,6 +31,7 @@ class AWSLogsWatchConsole:
         args = self.parser.parse_args()
 
         profile = args.profile or os.environ.get("AWS_PROFILE", "default")
+        profile = self.load_profile(profile, args.interactive)
         awslogs_watch = AWSLogsWatch(profile=profile)
         command = self.load_command()
         awslogs_watch.awslogs.option = self.load_option(args.option, args.interactive)
@@ -73,6 +74,16 @@ class AWSLogsWatchConsole:
             option += f" {_option}"
 
         return option
+
+    def load_profile(self, profile, is_interactive=False):
+        if not is_interactive:
+            return profile
+
+        _profile = Prompt.input_profile()
+        if not _profile:
+            return profile
+
+        return _profile
 
 
 def start_console():
