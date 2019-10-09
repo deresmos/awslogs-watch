@@ -19,6 +19,9 @@ class AWSLogsWatchConsole:
             "--profile", type=str, default="", help="AWS Account profile"
         )
         parser.add_argument("--option", type=str, default="", help="awslogs option")
+        parser.add_argument(
+            "-i", "--interactive", action="store_true", help="interactive mode"
+        )
         parser.add_argument("--update", action="store_true", help="Update group names")
         parser.add_argument("--tail", action="store_true", help="Tail log")
         parser.add_argument("--get", action="store_true", help="Get log")
