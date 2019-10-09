@@ -79,7 +79,7 @@ class AWSLogsWatchConsole:
 
         _profile = Prompt.input_profile(default=profile)
         if not _profile:
-            return profile
+            raise AWSLogsWatchException(f"Please input profile.")
 
         return _profile
 
