@@ -4,6 +4,7 @@ from argparse import ArgumentParser
 from awslogs_watch.base import AWSLogsWatch
 from awslogs_watch.exceptions import AWSLogsWatchException
 from awslogs_watch.lib.execute import Executer
+from awslogs_watch.lib.path import AWSLogsWatchPath
 from awslogs_watch.lib.prompt import Prompt
 from awslogs_watch.model import AWSLogsCommand
 
