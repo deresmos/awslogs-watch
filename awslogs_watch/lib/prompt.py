@@ -1,4 +1,5 @@
 from prompt_toolkit import PromptSession
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.completion import FuzzyWordCompleter
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.shortcuts import prompt
@@ -12,7 +13,11 @@ class Prompt:
     def input_group(groups, history_path) -> str:
         completer = FuzzyWordCompleter(groups, WORD=True)
         history = FileHistory(history_path)
-        session = PromptSession(history=history)
+        session = PromptSession(
+            history=history,
+            auto_suggest=AutoSuggestFromHistory(),
+            enable_history_search=True,
+        )
         group_name = session.prompt(
             "Input Group: ", completer=completer, complete_while_typing=True
         )
@@ -41,7 +46,11 @@ class Prompt:
         completer = FuzzyWordCompleter(options, WORD=True)
 
         history = FileHistory(history_path)
-        session = PromptSession(history=history)
+        session = PromptSession(
+            history=history,
+            auto_suggest=AutoSuggestFromHistory(),
+            enable_history_search=True,
+        )
 
         option_str = session.prompt(
             "Input Option: ",
