@@ -9,7 +9,7 @@ class ProfileConfig:
     def load_profiles(path: str) -> List[str]:
         _path = Path(path).expanduser()
         if not _path.is_file():
-            return [""]
+            return []
 
         config = ConfigParser()
         config.read_file(codecs.open(str(_path), "r", "utf-8"))
