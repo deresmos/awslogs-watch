@@ -3,6 +3,7 @@ from prompt_toolkit.completion import FuzzyWordCompleter
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.shortcuts import prompt
 
+from awslogs_watch.lib.profile_config import ProfileConfig
 from awslogs_watch.model import AWSLogsCommand, AWSLogsOption
 
 
@@ -53,7 +54,14 @@ class Prompt:
 
     @staticmethod
     def input_profile(default="") -> str:
-        # TODO: profile completer
-        profile = prompt("Input Profile: ", complete_while_typing=True, default=default)
+        profiles = ProfileConfig.load_profiles("~/.aws/credentials")
+        completer = FuzzyWordCompleter(profiles, WORD=True)
+
+        profile = prompt(
+            "Input Profile: ",
+            completer=completer,
+            complete_while_typing=True,
+            default=default,
+        )
 
         return profile
