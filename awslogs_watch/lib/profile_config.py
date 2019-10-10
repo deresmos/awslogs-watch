@@ -14,4 +14,4 @@ class ProfileConfig:
         config = ConfigParser()
         config.read_file(codecs.open(str(_path), "r", "utf-8"))
 
-        return [key for key, value in config.items()]
+        return config.sections()
