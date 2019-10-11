@@ -73,4 +73,7 @@ class Prompt:
             default=default,
         )
 
+        if profile not in profiles:
+            return ""
+
         return profile
