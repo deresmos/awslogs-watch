@@ -66,15 +66,11 @@ class AWSLogsWatch:
         self.awslogs = AWSLogsExecutor(profile)
         self.path = AWSLogsWatchPath()
 
-    def tail(self):
-        group = self.prompt_group()
+    def tail(self, group):
         cmd = self.awslogs.create_command(f"get {group} --watch")
         Executer.run(cmd)
 
-    def get(self):
-        group = self.prompt_group()
-        if not group:
-            raise AWSLogsWatchException(f"No such group. ({group})")
+    def get(self, group):
         cmd = self.awslogs.create_command(f"get {group}")
         Executer.run(cmd)
 
@@ -83,9 +79,7 @@ class AWSLogsWatch:
         self.awslogs.cache_groups()
         print("Updated!")
 
-    def prompt_group(self):
+    def load_groups(self):
         groups = self.awslogs.load_groups_from_cache()
-        history_path = self.awslogs.history_path
-        group_name = Prompt.input_group(groups, history_path)
 
-        return group_name
+        return groups

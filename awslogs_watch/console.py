@@ -45,16 +45,17 @@ class AWSLogsWatchConsole:
         awslogs_watch = AWSLogsWatch(profile=profile)
         command = self.load_command()
         awslogs_watch.awslogs.option = self.load_option(args.option, args.interactive)
+        group = self.load_group(awslogs_watch)
 
         if command.is_update():
             awslogs_watch.update_groups()
             return
 
         if command.is_get():
-            awslogs_watch.get()
+            awslogs_watch.get(group)
 
         if command.is_tail():
-            awslogs_watch.tail()
+            awslogs_watch.tail(group)
 
     def load_command(self):
         args = self.parser.parse_args()
@@ -93,6 +94,16 @@ class AWSLogsWatchConsole:
             raise AWSLogsWatchException(f"Please select correct profile.")
 
         return _profile
+
+    def load_group(self, awslogs_watch):
+        groups = awslogs_watch.load_groups()
+        history_path = awslogs_watch.awslogs.history_path
+        group_name = self.prompt.input_group(groups, history_path)
+
+        if not group_name:
+            raise AWSLogsWatchException(f"No such group.")
+
+        return group_name
 
 
 def start_console():
