@@ -4,13 +4,17 @@ from prompt_toolkit.completion import FuzzyWordCompleter
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.shortcuts import prompt
 
+from awslogs_watch.lib.path import AWSLogsWatchPath
 from awslogs_watch.lib.profile_config import ProfileConfig
 from awslogs_watch.model import AWSLogsCommand, AWSLogsOption
 
 
 class Prompt:
+    COMMAND_HISTORY_NAME = "command_history"
+
     def __init__(self, is_latest_history=False):
         self.is_latest_history = is_latest_history
+        self.alw_path = AWSLogsWatchPath()
 
     @staticmethod
     def input_group(groups, history_path) -> str:
@@ -30,12 +34,18 @@ class Prompt:
 
         return group_name
 
-    @staticmethod
-    def input_command() -> str:
+    def input_command(self) -> str:
         commands = [command.name for command in list(AWSLogsCommand)]
         completer = FuzzyWordCompleter(commands)
-        command_str = prompt(
-            "Input Command: ", completer=completer, complete_while_typing=True
+        history = FileHistory(self.alw_path.create_filepath(self.COMMAND_HISTORY_NAME))
+        session = PromptSession(history=history, enable_history_search=True)
+        default = self.find_latest_history(history)
+
+        command_str = session.prompt(
+            "Input Command: ",
+            completer=completer,
+            complete_while_typing=True,
+            default=default,
         )
 
         if command_str not in commands:
