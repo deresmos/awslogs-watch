@@ -70,7 +70,8 @@ class AWSLogsWatchConsole:
         if not is_interactive:
             return option
 
-        option = Prompt.input_option(self.OPTION_CACHE_NAME, default=option)
+        option_history_path = AWSLogsWatchPath().create_filepath(self.OPTION_CACHE_NAME)
+        option = Prompt.input_option(option_history_path, default=option)
 
         return option
 
