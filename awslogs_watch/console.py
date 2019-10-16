@@ -32,6 +32,7 @@ class AWSLogsWatchConsole:
         args = self.parser.parse_args()
 
         profile = args.profile or os.environ.get("AWS_PROFILE", "default")
+        profile = self.load_profile(profile, args.interactive)
         awslogs_watch = AWSLogsWatch(profile=profile)
         command = self.load_command()
         awslogs_watch.awslogs.option = self.load_option(args.option, args.interactive)
@@ -66,15 +67,23 @@ class AWSLogsWatchConsole:
         return command
 
     def load_option(self, option, is_interactive=False):
-        if option and not is_interactive:
+        if not is_interactive:
             return option
 
-        if is_interactive:
-            cache_path = AWSLogsWatchPath().create_filepath(self.OPTION_CACHE_NAME)
-            _option = Prompt.input_option(cache_path)
-            option += f" {_option}"
+        option_history_path = AWSLogsWatchPath().create_filepath(self.OPTION_CACHE_NAME)
+        option = Prompt.input_option(option_history_path, default=option)
 
         return option
+
+    def load_profile(self, profile, is_interactive=False):
+        if not is_interactive:
+            return profile
+
+        _profile = Prompt.input_profile(default=profile)
+        if not _profile:
+            raise AWSLogsWatchException(f"Please select correct profile.")
+
+        return _profile
 
 
 def start_console():
