@@ -23,6 +23,12 @@ class AWSLogsWatchConsole:
         parser.add_argument(
             "-i", "--interactive", action="store_true", help="interactive mode"
         )
+        parser.add_argument(
+            "-l",
+            "--latest_default",
+            action="store_true",
+            help="default value is latest history",
+        )
         parser.add_argument("--update", action="store_true", help="Update group names")
         parser.add_argument("--tail", action="store_true", help="Tail log")
         parser.add_argument("--get", action="store_true", help="Get log")
