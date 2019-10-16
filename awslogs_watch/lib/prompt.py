@@ -16,8 +16,7 @@ class Prompt:
         self.is_latest_history = is_latest_history
         self.alw_path = AWSLogsWatchPath()
 
-    @staticmethod
-    def input_group(groups, history_path) -> str:
+    def input_group(self, groups, history_path) -> str:
         completer = FuzzyWordCompleter(groups, WORD=True)
         history = FileHistory(history_path)
         session = PromptSession(
@@ -25,8 +24,13 @@ class Prompt:
             auto_suggest=AutoSuggestFromHistory(),
             enable_history_search=True,
         )
+        default = self.find_latest_history(history)
+
         group_name = session.prompt(
-            "Input Group: ", completer=completer, complete_while_typing=True
+            "Input Group: ",
+            completer=completer,
+            complete_while_typing=True,
+            default=default,
         )
 
         if group_name not in groups:
