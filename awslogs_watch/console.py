@@ -34,6 +34,9 @@ class AWSLogsWatchConsole:
         parser.add_argument("--get", action="store_true", help="Get log")
         self.parser = parser
 
+        args = parser.parse_args()
+        self.prompt = Prompt(is_latest_history=args.latest_default)
+
     def run(self):
         args = self.parser.parse_args()
 
@@ -77,7 +80,7 @@ class AWSLogsWatchConsole:
             return option
 
         option_history_path = AWSLogsWatchPath().create_filepath(self.OPTION_CACHE_NAME)
-        option = Prompt.input_option(option_history_path, default=option)
+        option = self.prompt.input_option(option_history_path, default=option)
 
         return option
 
@@ -85,7 +88,7 @@ class AWSLogsWatchConsole:
         if not is_interactive:
             return profile
 
-        _profile = Prompt.input_profile(default=profile)
+        _profile = self.prompt.input_profile(default=profile)
         if not _profile:
             raise AWSLogsWatchException(f"Please select correct profile.")
 

@@ -9,6 +9,9 @@ from awslogs_watch.model import AWSLogsCommand, AWSLogsOption
 
 
 class Prompt:
+    def __init__(self, is_latest_history=False):
+        self.is_latest_history = is_latest_history
+
     @staticmethod
     def input_group(groups, history_path) -> str:
         completer = FuzzyWordCompleter(groups, WORD=True)
@@ -40,8 +43,7 @@ class Prompt:
 
         return command_str
 
-    @staticmethod
-    def input_option(history_path, default="") -> str:
+    def input_option(self, history_path, default="") -> str:
         options = [option.value for option in list(AWSLogsOption)]
         completer = FuzzyWordCompleter(options, WORD=True)
 
@@ -52,6 +54,7 @@ class Prompt:
             enable_history_search=True,
         )
 
+        default = self.find_default_from_history(default, history)
         option_str = session.prompt(
             "Input Option: ",
             completer=completer,
@@ -61,8 +64,7 @@ class Prompt:
 
         return option_str
 
-    @staticmethod
-    def input_profile(default="") -> str:
+    def input_profile(self, default="") -> str:
         profiles = ProfileConfig.load_profiles("~/.aws/credentials")
         completer = FuzzyWordCompleter(profiles, WORD=True)
 
@@ -77,3 +79,20 @@ class Prompt:
             return ""
 
         return profile
+
+    def find_default_from_history(self, default, history) -> str:
+        default = self.find_latest_history(history) or default
+
+        return default
+
+    def find_latest_history(self, history: FileHistory) -> str:
+        if not self.is_latest_history:
+            return ""
+
+        latest_history = history.load_history_strings()
+        try:
+            latest_value = next(latest_history)
+        except StopIteration:
+            latest_value = ""
+
+        return str(latest_value)
