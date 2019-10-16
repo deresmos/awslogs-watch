@@ -11,6 +11,9 @@ from awslogs_watch.model import AWSLogsCommand, AWSLogsOption
 
 class Prompt:
     COMMAND_HISTORY_NAME = "command_history"
+    PROFILE_HISTORY_NAME = "profile_history"
+
+    AWS_CRED_PATH = "~/.aws/credentials"
 
     def __init__(self, is_latest_history=False):
         self.is_latest_history = is_latest_history
@@ -79,10 +82,14 @@ class Prompt:
         return option_str
 
     def input_profile(self, default="") -> str:
-        profiles = ProfileConfig.load_profiles("~/.aws/credentials")
+        profiles = ProfileConfig.load_profiles(self.AWS_CRED_PATH)
         completer = FuzzyWordCompleter(profiles, WORD=True)
+        history = FileHistory(self.alw_path.create_filepath(self.PROFILE_HISTORY_NAME))
 
-        profile = prompt(
+        session = PromptSession(history=history, enable_history_search=True)
+        default = self.find_default_from_history(default, history)
+
+        profile = session.prompt(
             "Input Profile: ",
             completer=completer,
             complete_while_typing=True,
