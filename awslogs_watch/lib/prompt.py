@@ -26,7 +26,7 @@ class Prompt:
         default = self.find_latest_history(history)
 
         group_name = session.prompt(
-            "Input Group: ",
+            "Group  : ",
             completer=completer,
             complete_while_typing=True,
             default=default,
@@ -45,7 +45,7 @@ class Prompt:
         default = self.find_latest_history(history)
 
         command_str = session.prompt(
-            "Input Command: ",
+            "Command: ",
             completer=completer,
             complete_while_typing=True,
             default=default,
@@ -65,7 +65,7 @@ class Prompt:
 
         default = self.find_default_from_history(default, history)
         option_str = session.prompt(
-            "Input Option: ",
+            "Option : ",
             completer=completer,
             complete_while_typing=True,
             default=default,
@@ -82,7 +82,7 @@ class Prompt:
         default = self.find_default_from_history(default, history)
 
         profile = session.prompt(
-            "Input Profile: ",
+            "Profile: ",
             completer=completer,
             complete_while_typing=True,
             default=default,
