@@ -2,7 +2,6 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.completion import FuzzyWordCompleter
 from prompt_toolkit.history import FileHistory
-from prompt_toolkit.shortcuts import prompt
 
 from awslogs_watch.lib.path import AWSLogsWatchPath
 from awslogs_watch.lib.profile_config import ProfileConfig
