@@ -1,10 +1,10 @@
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import FuzzyWordCompleter
+from prompt_toolkit.history import FileHistory
+
 from awslogs_watch.lib.path import AWSLogsWatchPath
 from awslogs_watch.lib.profile_config import ProfileConfig
 from awslogs_watch.model import AWSLogsCommand, AWSLogsOption
-from prompt_toolkit import PromptSession
-from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
-from prompt_toolkit.completion import FuzzyWordCompleter
-from prompt_toolkit.history import FileHistory
 
 
 class Prompt:
@@ -20,7 +20,7 @@ class Prompt:
     def input_group(self, groups, history_path) -> str:
         completer = FuzzyWordCompleter(groups, WORD=True)
         history = FileHistory(history_path)
-        session = PromptSession(history=history, auto_suggest=AutoSuggestFromHistory())
+        session = PromptSession(history=history)
         default = self.find_recent_history(history)
 
         group_name = session.prompt(
@@ -59,7 +59,7 @@ class Prompt:
         completer = FuzzyWordCompleter(options, WORD=True)
 
         history = FileHistory(history_path)
-        session = PromptSession(history=history, auto_suggest=AutoSuggestFromHistory())
+        session = PromptSession(history=history)
 
         default = self.find_default_from_history(default, history)
         option_str = session.prompt(
