@@ -15,15 +15,15 @@ class Prompt:
 
     AWS_CRED_PATH = "~/.aws/credentials"
 
-    def __init__(self, is_latest_history=False):
-        self.is_latest_history = is_latest_history
+    def __init__(self, is_recent_history=False):
+        self.is_recent_history = is_recent_history
         self.alw_path = AWSLogsWatchPath()
 
     def input_group(self, groups, history_path) -> str:
         completer = FuzzyWordCompleter(groups, WORD=True)
         history = FileHistory(history_path)
         session = PromptSession(history=history, auto_suggest=AutoSuggestFromHistory())
-        default = self.find_latest_history(history)
+        default = self.find_recent_history(history)
 
         group_name = session.prompt(
             "Group  : ",
@@ -42,7 +42,7 @@ class Prompt:
         completer = FuzzyWordCompleter(commands)
         history = FileHistory(self.alw_path.create_filepath(self.COMMAND_HISTORY_NAME))
         session = PromptSession(history=history)
-        default = self.find_latest_history(history)
+        default = self.find_recent_history(history)
 
         command_str = session.prompt(
             "Command: ",
@@ -94,18 +94,18 @@ class Prompt:
         return profile
 
     def find_default_from_history(self, default, history) -> str:
-        default = self.find_latest_history(history) or default
+        default = self.find_recent_history(history) or default
 
         return default
 
-    def find_latest_history(self, history: FileHistory) -> str:
-        if not self.is_latest_history:
+    def find_recent_history(self, history: FileHistory) -> str:
+        if not self.is_recent_history:
             return ""
 
-        latest_history = history.load_history_strings()
+        recent_history = history.load_history_strings()
         try:
-            latest_value = next(latest_history)
+            recent_value = next(recent_history)
         except StopIteration:
-            latest_value = ""
+            recent_value = ""
 
-        return str(latest_value)
+        return str(recent_value)
