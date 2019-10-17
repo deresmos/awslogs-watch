@@ -33,18 +33,18 @@ class AWSLogsWatchConsole:
         parser.add_argument("--tail", action="store_true", help="Tail log")
         parser.add_argument("--get", action="store_true", help="Get log")
         self.parser = parser
+        self.parse_args = parser.parse_args()
 
-        args = parser.parse_args()
-        self.prompt = Prompt(is_latest_history=args.latest_default)
+        self.prompt = Prompt(is_latest_history=self.parse_args.latest_default)
 
     def run(self):
-        args = self.parser.parse_args()
-
-        profile = args.profile or os.environ.get("AWS_PROFILE", "default")
-        profile = self.load_profile(profile, args.interactive)
+        profile = self.parse_args.profile or os.environ.get("AWS_PROFILE", "default")
+        profile = self.load_profile(profile, self.parse_args.interactive)
         awslogs_watch = AWSLogsWatch(profile=profile)
         command = self.load_command()
-        awslogs_watch.awslogs.option = self.load_option(args.option, args.interactive)
+        awslogs_watch.awslogs.option = self.load_option(
+            self.parse_args.option, self.parse_args.interactive
+        )
         group = self.load_group(awslogs_watch)
 
         if command.is_update():
@@ -58,14 +58,12 @@ class AWSLogsWatchConsole:
             awslogs_watch.tail(group)
 
     def load_command(self):
-        args = self.parser.parse_args()
-
         command = ""
-        if args.update:
+        if self.parse_args.update:
             command = AWSLogsCommand.update
-        elif args.get:
+        elif self.parse_args.get:
             command = AWSLogsCommand.get
-        elif args.tail:
+        elif self.parse_args.tail:
             command = AWSLogsCommand.tail
 
         if not command:
