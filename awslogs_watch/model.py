@@ -5,6 +5,7 @@ class AWSLogsCommand(Enum):
     update = auto()
     get = auto()
     tail = auto()
+    clear = auto()
 
     def is_update(self):
         if self == AWSLogsCommand.update:
@@ -20,6 +21,12 @@ class AWSLogsCommand(Enum):
 
     def is_tail(self):
         if self == AWSLogsCommand.tail:
+            return True
+
+        return False
+
+    def is_clear(self):
+        if self == AWSLogsCommand.clear:
             return True
 
         return False
