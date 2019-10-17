@@ -69,7 +69,7 @@ class AWSLogsWatchConsole:
         if not command:
             command_str = self.prompt.input_command()
             if not command_str:
-                raise AWSLogsWatchException(f"No such command. ({command_str})")
+                raise AWSLogsWatchException(f"No such command.")
             command = AWSLogsCommand[command_str]
 
         return command
