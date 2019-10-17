@@ -25,7 +25,7 @@ Examples
 ## Update awglogs groups cache
 ```bash
 $ awslogs-watch
-Input Command: update
+Command: update
 ```
 
 or
@@ -34,32 +34,50 @@ or
 $ awslogs-watch --update
 ```
 
+## Interactive mode
+```bash
+$ awslogs-watch -i
+Profile: default
+Command: get
+Option : --start="1d"
+Group  : group_name
+```
+
+## Interactive mode (Default value is recent history)
+```bash
+$ awslogs-watch -ir
+Profile: default
+Command: get
+Option : --start="1d"
+Group  : group_name
+```
+
 ## Get awslogs
 ```bash
 $ awslogs-watch
-Input Command: get
-Input group: select interactive group name
+Command: get
+group: select interactive group name
 ```
 
 or
 
 ```bash
 $ awslogs-watch --get
-Input group: select interactive group name
+group: select interactive group name
 ```
 
 ## Tail awslogs
 ```bash
 $ awslogs-watch
-Input Command: tail
-Input group: select interactive group name
+Command: tail
+group: select interactive group name
 ```
 
 or
 
 ```bash
 $ awslogs-watch --tail
-Input group: select interactive group name
+group: select interactive group name
 ```
 
 ## Change profile
