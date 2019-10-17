@@ -20,7 +20,7 @@ class Prompt:
     def input_group(self, groups, history_path) -> str:
         completer = FuzzyWordCompleter(groups, WORD=True)
         history = FileHistory(history_path)
-        session = PromptSession(history=history, auto_suggest=AutoSuggestFromHistory())
+        session = PromptSession(history=history)
         default = self.find_recent_history(history)
 
         group_name = session.prompt(
@@ -59,7 +59,7 @@ class Prompt:
         completer = FuzzyWordCompleter(options, WORD=True)
 
         history = FileHistory(history_path)
-        session = PromptSession(history=history, auto_suggest=AutoSuggestFromHistory())
+        session = PromptSession(history=history)
 
         default = self.find_default_from_history(default, history)
         option_str = session.prompt(
