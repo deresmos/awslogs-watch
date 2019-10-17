@@ -23,45 +23,53 @@ class AWSLogsWatchConsole:
         parser.add_argument(
             "-i", "--interactive", action="store_true", help="interactive mode"
         )
+        parser.add_argument(
+            "-l",
+            "--latest_default",
+            action="store_true",
+            help="default value is latest history",
+        )
         parser.add_argument("--update", action="store_true", help="Update group names")
         parser.add_argument("--tail", action="store_true", help="Tail log")
         parser.add_argument("--get", action="store_true", help="Get log")
         self.parser = parser
+        self.parse_args = parser.parse_args()
+
+        self.prompt = Prompt(is_latest_history=self.parse_args.latest_default)
 
     def run(self):
-        args = self.parser.parse_args()
-
-        profile = args.profile or os.environ.get("AWS_PROFILE", "default")
-        profile = self.load_profile(profile, args.interactive)
+        profile = self.parse_args.profile or os.environ.get("AWS_PROFILE", "default")
+        profile = self.load_profile(profile, self.parse_args.interactive)
         awslogs_watch = AWSLogsWatch(profile=profile)
         command = self.load_command()
-        awslogs_watch.awslogs.option = self.load_option(args.option, args.interactive)
+        awslogs_watch.awslogs.option = self.load_option(
+            self.parse_args.option, self.parse_args.interactive
+        )
+        group = self.load_group(awslogs_watch)
 
         if command.is_update():
             awslogs_watch.update_groups()
             return
 
         if command.is_get():
-            awslogs_watch.get()
+            awslogs_watch.get(group)
 
         if command.is_tail():
-            awslogs_watch.tail()
+            awslogs_watch.tail(group)
 
     def load_command(self):
-        args = self.parser.parse_args()
-
         command = ""
-        if args.update:
+        if self.parse_args.update:
             command = AWSLogsCommand.update
-        elif args.get:
+        elif self.parse_args.get:
             command = AWSLogsCommand.get
-        elif args.tail:
+        elif self.parse_args.tail:
             command = AWSLogsCommand.tail
 
         if not command:
-            command_str = Prompt.input_command()
+            command_str = self.prompt.input_command()
             if not command_str:
-                raise AWSLogsWatchException(f"No such command. ({command_str})")
+                raise AWSLogsWatchException(f"No such command.")
             command = AWSLogsCommand[command_str]
 
         return command
@@ -71,7 +79,7 @@ class AWSLogsWatchConsole:
             return option
 
         option_history_path = AWSLogsWatchPath().create_filepath(self.OPTION_CACHE_NAME)
-        option = Prompt.input_option(option_history_path, default=option)
+        option = self.prompt.input_option(option_history_path, default=option)
 
         return option
 
@@ -79,11 +87,21 @@ class AWSLogsWatchConsole:
         if not is_interactive:
             return profile
 
-        _profile = Prompt.input_profile(default=profile)
+        _profile = self.prompt.input_profile(default=profile)
         if not _profile:
             raise AWSLogsWatchException(f"Please select correct profile.")
 
         return _profile
+
+    def load_group(self, awslogs_watch):
+        groups = awslogs_watch.load_groups()
+        history_path = awslogs_watch.awslogs.history_path
+        group_name = self.prompt.input_group(groups, history_path)
+
+        if not group_name:
+            raise AWSLogsWatchException(f"No such group.")
+
+        return group_name
 
 
 def start_console():
