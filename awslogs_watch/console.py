@@ -42,15 +42,15 @@ class AWSLogsWatchConsole:
         profile = self.load_profile(profile, self.parse_args.interactive)
         awslogs_watch = AWSLogsWatch(profile=profile)
         command = self.load_command()
-        awslogs_watch.awslogs.option = self.load_option(
-            self.parse_args.option, self.parse_args.interactive
-        )
-        group = self.load_group(awslogs_watch)
 
         if command.is_update():
             awslogs_watch.update_groups()
             return
 
+        awslogs_watch.awslogs.option = self.load_option(
+            self.parse_args.option, self.parse_args.interactive
+        )
+        group = self.load_group(awslogs_watch)
         if command.is_get():
             awslogs_watch.get(group)
 
