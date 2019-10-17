@@ -22,11 +22,7 @@ class Prompt:
     def input_group(self, groups, history_path) -> str:
         completer = FuzzyWordCompleter(groups, WORD=True)
         history = FileHistory(history_path)
-        session = PromptSession(
-            history=history,
-            auto_suggest=AutoSuggestFromHistory(),
-            enable_history_search=True,
-        )
+        session = PromptSession(history=history, auto_suggest=AutoSuggestFromHistory())
         default = self.find_latest_history(history)
 
         group_name = session.prompt(
@@ -45,7 +41,7 @@ class Prompt:
         commands = [command.name for command in list(AWSLogsCommand)]
         completer = FuzzyWordCompleter(commands)
         history = FileHistory(self.alw_path.create_filepath(self.COMMAND_HISTORY_NAME))
-        session = PromptSession(history=history, enable_history_search=True)
+        session = PromptSession(history=history)
         default = self.find_latest_history(history)
 
         command_str = session.prompt(
@@ -65,11 +61,7 @@ class Prompt:
         completer = FuzzyWordCompleter(options, WORD=True)
 
         history = FileHistory(history_path)
-        session = PromptSession(
-            history=history,
-            auto_suggest=AutoSuggestFromHistory(),
-            enable_history_search=True,
-        )
+        session = PromptSession(history=history, auto_suggest=AutoSuggestFromHistory())
 
         default = self.find_default_from_history(default, history)
         option_str = session.prompt(
@@ -86,7 +78,7 @@ class Prompt:
         completer = FuzzyWordCompleter(profiles, WORD=True)
         history = FileHistory(self.alw_path.create_filepath(self.PROFILE_HISTORY_NAME))
 
-        session = PromptSession(history=history, enable_history_search=True)
+        session = PromptSession(history=history)
         default = self.find_default_from_history(default, history)
 
         profile = session.prompt(
