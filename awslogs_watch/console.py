@@ -24,10 +24,10 @@ class AWSLogsWatchConsole:
             "-i", "--interactive", action="store_true", help="interactive mode"
         )
         parser.add_argument(
-            "-l",
-            "--latest_default",
+            "-r",
+            "--recent_default",
             action="store_true",
-            help="default value is latest history",
+            help="default value is recent history",
         )
         parser.add_argument("--update", action="store_true", help="Update group names")
         parser.add_argument("--tail", action="store_true", help="Tail log")
@@ -35,7 +35,7 @@ class AWSLogsWatchConsole:
         self.parser = parser
         self.parse_args = parser.parse_args()
 
-        self.prompt = Prompt(is_latest_history=self.parse_args.latest_default)
+        self.prompt = Prompt(is_recent_history=self.parse_args.recent_default)
 
     def run(self):
         profile = self.parse_args.profile or os.environ.get("AWS_PROFILE", "default")
