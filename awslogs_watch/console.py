@@ -1,6 +1,7 @@
 import os
 from argparse import ArgumentParser
 
+from awslogs_watch._version import __version__
 from awslogs_watch.base import AWSLogsWatch
 from awslogs_watch.exceptions import AWSLogsWatchException
 from awslogs_watch.lib.execute import Executer
@@ -15,6 +16,9 @@ class AWSLogsWatchConsole:
     def __init__(self):
         parser = ArgumentParser(
             description="awslogs wrapper command.", usage="%(prog)s [options]"
+        )
+        parser.add_argument(
+            "-v", "--version", action="version", version=f"%(prog)s v{__version__}"
         )
         parser.add_argument(
             "--profile", type=str, default="", help="AWS Account profile"
