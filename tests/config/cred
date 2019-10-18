@@ -1,0 +1,6 @@
+[default]
+a=1
+[test]
+a=1
+[dev]
+a=1

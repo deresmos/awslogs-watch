@@ -2,10 +2,8 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-from awslogs_watch.exceptions import AWSLogsWatchException
 from awslogs_watch.lib.execute import Executer
 from awslogs_watch.lib.path import AWSLogsWatchPath
-from awslogs_watch.lib.prompt import Prompt
 
 
 class AWSLogsExecutor:
@@ -66,30 +64,20 @@ class AWSLogsWatch:
         self.awslogs = AWSLogsExecutor(profile)
         self.path = AWSLogsWatchPath()
 
-    def tail(self):
-        group = self.prompt_group()
+    def tail(self, group):
         cmd = self.awslogs.create_command(f"get {group} --watch")
         Executer.run(cmd)
-        print(f"Stop {group}")
 
-    def get(self):
-        try:
-            group = self.prompt_group()
-            if not group:
-                raise AWSLogsWatchException(f"No such group. ({group})")
-            cmd = self.awslogs.create_command(f"get {group}")
-            Executer.run(cmd)
-        except KeyboardInterrupt:
-            print(f"Stop awslogs: {group}")
+    def get(self, group):
+        cmd = self.awslogs.create_command(f"get {group}")
+        Executer.run(cmd)
 
     def update_groups(self):
         print("Updating...")
         self.awslogs.cache_groups()
         print("Updated!")
 
-    def prompt_group(self):
+    def load_groups(self):
         groups = self.awslogs.load_groups_from_cache()
-        history_path = self.awslogs.history_path
-        group_name = Prompt.input_group(groups, history_path)
 
-        return group_name
+        return groups

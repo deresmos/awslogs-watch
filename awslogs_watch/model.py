@@ -23,3 +23,16 @@ class AWSLogsCommand(Enum):
             return True
 
         return False
+
+
+class AWSLogsOption(Enum):
+    FILTER_PATTERN = "--filter-pattern"
+    WATCH_INTERVAL = "--watch-interval"
+    NO_GROUP = "--no-group"
+    NO_STREAM = "--no-stream"
+    TIMESTAMP = "--timestamp"
+    INGESTION_TIME = "--ingestion-time"
+    START = "--start"
+    END = "--end"
+    COLOR = "--color"
+    QUERY = "--query"
