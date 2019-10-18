@@ -17,8 +17,3 @@ class AWSLogsWatchPath:
     def create_filepath(self, filename) -> str:
         self._create_dirpath(self.cache_dirpath)
         return str(self.cache_dirpath / filename)
-
-    def clear_cache(self) -> None:
-        from shutil import rmtree
-
-        rmtree(self.cache_dirpath)

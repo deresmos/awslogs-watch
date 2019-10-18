@@ -32,7 +32,6 @@ class AWSLogsWatchConsole:
         parser.add_argument("--update", action="store_true", help="Update group names")
         parser.add_argument("--tail", action="store_true", help="Tail log")
         parser.add_argument("--get", action="store_true", help="Get log")
-        parser.add_argument("--clear", action="store_true", help="Clear all cache")
         self.parser = parser
         self.parse_args = parser.parse_args()
 
@@ -46,10 +45,6 @@ class AWSLogsWatchConsole:
 
         if command.is_update():
             awslogs_watch.update_groups()
-            return
-
-        if command.is_clear():
-            AWSLogsWatchPath().clear_cache()
             return
 
         awslogs_watch.awslogs.option = self.load_option(
@@ -70,8 +65,6 @@ class AWSLogsWatchConsole:
             command = AWSLogsCommand.get
         elif self.parse_args.tail:
             command = AWSLogsCommand.tail
-        elif self.parse_args.clear:
-            command = AWSLogsCommand.clear
 
         if not command:
             command_str = self.prompt.input_command()
