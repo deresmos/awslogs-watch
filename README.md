@@ -2,7 +2,7 @@ awslogs-watch
 ==
 
 [![PyPI](https://badge.fury.io/py/awslogs-watch.svg)](https://badge.fury.io/py/awslogs-watch)
-[![Python Test](https://github.com/deresmos/awslogs-watch/workflows/Python%20Test/badge.svg)](https://github.com/deresmos/awslogs-watch/actions)
+[![Python Test](https://github.com/deresmos/awslogs-watch/workflows/Python%20Test/badge.svg)](https://github.com/deresmos/awslogs-watch/actions?workflow=Python+Test)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/deresmos/awslogs-watch/blob/master/LICENSE)
 
 
