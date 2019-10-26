@@ -8,7 +8,7 @@ awslogs-watch
 
 About
 ===
-awslogs-watch is a CLI tool that makes it easy to use awslogs.
+awslogs-watch is a CLI tool that makes it easy to use awslogs.  
 Default cache directory is `$XDG_CACHE_HOME/awslogs_watch` or `~/.cache/awslogs_watch`
 
 Installation
