@@ -40,8 +40,8 @@ $ awslogs-watch --update
 $ awslogs-watch -i
 Profile: default
 Command: get
-Option : --start="1d"
 Group  : group_name
+Option : --start="1d"
 ```
 
 ## Interactive mode (Default value is recent history)
@@ -50,8 +50,8 @@ Group  : group_name
 $ awslogs-watch -ir
 Profile: default
 Command: get
-Option : --start="1d"
 Group  : group_name
+Option : --start="1d"
 ```
 
 ## Get awslogs
