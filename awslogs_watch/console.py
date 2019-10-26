@@ -21,6 +21,9 @@ class AWSLogsWatchConsole:
             "-v", "--version", action="version", version=f"%(prog)s v{__version__}"
         )
         parser.add_argument(
+            "--cache_path", type=str, default="", help="Cache dirctory path"
+        )
+        parser.add_argument(
             "--profile", type=str, default="", help="AWS Account profile"
         )
         parser.add_argument("--option", type=str, default="", help="awslogs option")
@@ -39,6 +42,9 @@ class AWSLogsWatchConsole:
         self.parser = parser
         self.parse_args = parser.parse_args()
 
+        if self.parse_args.cache_path:
+            AWSLogsWatchPath.CACHE_PATH = self.parse_args.cache_path
+
         self.prompt = Prompt(is_recent_history=self.parse_args.recent_default)
 
     def run(self):
@@ -51,10 +57,10 @@ class AWSLogsWatchConsole:
             awslogs_watch.update_groups()
             return
 
+        group = self.load_group(awslogs_watch)
         awslogs_watch.awslogs.option = self.load_option(
             self.parse_args.option, self.parse_args.interactive
         )
-        group = self.load_group(awslogs_watch)
         if command.is_get():
             awslogs_watch.get(group)
 

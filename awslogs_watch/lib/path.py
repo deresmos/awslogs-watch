@@ -1,9 +1,10 @@
+from os import getenv
 from pathlib import Path
 from typing import Optional
 
 
 class AWSLogsWatchPath:
-    CACHE_PATH = "~/.cache/awslogs_watch"
+    CACHE_PATH = Path(getenv("XDG_CACHE_HOME", "~/.cache")) / "awslogs_watch"
 
     def __init__(self, cache_path: Optional[str] = None) -> None:
         self.cache_dirpath: Path = Path(cache_path or self.CACHE_PATH).expanduser()
