@@ -57,10 +57,10 @@ class AWSLogsWatchConsole:
             awslogs_watch.update_groups()
             return
 
+        group = self.load_group(awslogs_watch)
         awslogs_watch.awslogs.option = self.load_option(
             self.parse_args.option, self.parse_args.interactive
         )
-        group = self.load_group(awslogs_watch)
         if command.is_get():
             awslogs_watch.get(group)
 
